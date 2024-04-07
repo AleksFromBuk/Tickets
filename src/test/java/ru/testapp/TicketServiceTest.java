@@ -56,10 +56,9 @@ class TicketServiceTest {
                 "-path=" + path,
                 "-out=" + outputPath, "-filter=VVOa,TLV"
         };
-        String tmp =
+        String expected =
                 "there is no data for calculations in the selected direction"
                         + System.lineSeparator();
-        String expected = new String(tmp.getBytes(), StandardCharsets.UTF_8);
         TicketParser.main(inputData);
         assertThat(Files.readString(outputPath, StandardCharsets.UTF_8)).isEqualTo(expected);
         try (FileChannel channel = FileChannel.open(outputPath, StandardOpenOption.WRITE)) {
@@ -73,12 +72,11 @@ class TicketServiceTest {
                 "-path=" + path,
                 "-out=" + outputPath, "-filter=LRN,TLV"
         };
-        String tmp =
+        String expected =
                 "minimum price for the selected direction: 4000"
                         + System.lineSeparator()
                         + "the difference between the average price and the median is: -333,33333"
                         + System.lineSeparator();
-        String expected = new String(tmp.getBytes(), StandardCharsets.UTF_8);
         TicketParser.main(inputData);
         assertThat(Files.readString(outputPath, StandardCharsets.UTF_8)).isEqualTo(expected);
         try (FileChannel channel = FileChannel.open(outputPath, StandardOpenOption.WRITE)) {
