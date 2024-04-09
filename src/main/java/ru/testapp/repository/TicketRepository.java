@@ -8,4 +8,5 @@ public interface TicketRepository {
     List<Ticket> findAll();
 
     List<Ticket> findByRoute(String origin, String destination);
+
 }

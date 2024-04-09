@@ -3,6 +3,8 @@ package ru.testapp;
 import ru.testapp.repository.TicketRepository;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class TicketService {
     private final TicketRepository ticketRepository;
@@ -17,6 +19,20 @@ public class TicketService {
                 .map(Ticket::getPrice)
                 .min(Integer::compareTo)
                 .orElse(-1);
+    }
+
+    public Map<String, Integer> minPricesOfCarriersOnTheRoute(String origin, String destination) {
+        Map<String, Integer> map = new TreeMap<>();
+        String tmpCarrier;
+        int tmpMinPrice;
+        for (Ticket obj : ticketRepository.findByRoute(origin, destination)) {
+            tmpMinPrice = obj.getPrice();
+            tmpCarrier = obj.getCarrier();
+            if (!map.containsKey(tmpCarrier) || map.get(tmpCarrier) > obj.getPrice()) {
+                map.put(tmpCarrier, tmpMinPrice);
+            }
+        }
+        return map;
     }
 
     public double findPriceDifferenceBetweenAveAndMed(String origin, String destination) {
@@ -38,10 +54,10 @@ public class TicketService {
         } else {
             medianPrice = prices.get(prices.size() / 2);
         }
-        double averagePrice = 0;
+        double sum = 0;
         for (Integer it : prices) {
-            averagePrice += it;
+            sum += it;
         }
-        return averagePrice / prices.size() - medianPrice;
+        return sum / prices.size() - medianPrice;
     }
 }

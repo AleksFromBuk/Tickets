@@ -14,17 +14,30 @@
       "price": 12400
     },
     {
-      "origin": "VVO",
-      "origin_name": "Владивосток",
+      "origin": "LRN",
+      "origin_name": "Ларнака",
       "destination": "TLV",
       "destination_name": "Тель-Авив",
       "departure_date": "12.05.18",
       "departure_time": "17:20",
       "arrival_date": "12.05.18",
       "arrival_time": "23:50",
-      "carrier": "S7",
+      "carrier": "BA",
       "stops": 1,
       "price": 13100
+    },
+    {
+      "origin": "LRN",
+      "origin_name": "Ларнака",
+      "destination": "TLV",
+      "destination_name": "Тель-Авив",
+      "departure_date": "12.05.18",
+      "departure_time": "17:20",
+      "arrival_date": "12.05.18",
+      "arrival_time": "23:50",
+      "carrier": "BA",
+      "stops": 1,
+      "price": -1
     },
     {
       "origin": "LRN",
@@ -35,9 +48,22 @@
       "departure_time": "12:50",
       "arrival_date": "12.05.18",
       "arrival_time": "14:30",
-      "carrier": "SU",
+      "carrier": "S7",
       "stops": 1,
       "price": 7000
+    },
+    {
+      "origin": "LRN",
+      "origin_name": "Ларнака",
+      "destination": "TLV",
+      "destination_name": "Тель-Авив",
+      "departure_date": "12.05.18",
+      "departure_time": "12:50",
+      "arrival_date": "12.05.18",
+      "arrival_time": "14:30",
+      "carrier": "S7",
+      "stops": 1,
+      "price": -2
     },
     {
       "origin": "LRN",
@@ -63,7 +89,33 @@
       "arrival_time": "14:30",
       "carrier": "SU",
       "stops": 1,
+      "price": -3
+    },
+    {
+      "origin": "LRN",
+      "origin_name": "Ларнака",
+      "destination": "TLV",
+      "destination_name": "Тель-Авив",
+      "departure_date": "12.05.18",
+      "departure_time": "12:50",
+      "arrival_date": "12.05.18",
+      "arrival_time": "14:30",
+      "carrier": "TK",
+      "stops": 1,
       "price": 4000
+    },
+    {
+      "origin": "LRN",
+      "origin_name": "Ларнака",
+      "destination": "TLV",
+      "destination_name": "Тель-Авив",
+      "departure_date": "12.05.18",
+      "departure_time": "12:50",
+      "arrival_date": "12.05.18",
+      "arrival_time": "14:30",
+      "carrier": "TK",
+      "stops": 1,
+      "price": -4
     }
   ]
 }
