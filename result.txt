@@ -1,1 +1,2 @@
-
+Minimum flight time SU carrier for the selected route is:  дни = 0, часы = 1, минуты = 40
+the difference between the average price and the median is: 0,00000

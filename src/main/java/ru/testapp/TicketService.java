@@ -1,6 +1,7 @@
 package ru.testapp;
 
 import ru.testapp.repository.TicketRepository;
+import ru.testapp.util.TimesInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,20 @@ public class TicketService {
             tmpCarrier = obj.getCarrier();
             if (!map.containsKey(tmpCarrier) || map.get(tmpCarrier) > obj.getPrice()) {
                 map.put(tmpCarrier, tmpMinPrice);
+            }
+        }
+        return map;
+    }
+
+    public Map<String, Long> minFlightTimeOnTheRoute(String origin, String destination) {
+        Map<String, Long> map = new TreeMap<>();
+        String tmpCarrier;
+        for (Ticket obj : ticketRepository.findByRoute(origin, destination)) {
+            tmpCarrier = obj.getCarrier();
+            long itLongValue = TimesInfo.getDataTime(obj.getDepartureDate(), obj.getDepartureTime(),
+                    obj.getArrivalDate(), obj.getArrivalTime());
+            if (!map.containsKey(tmpCarrier) || map.get(tmpCarrier) > itLongValue) {
+                map.put(tmpCarrier, itLongValue);
             }
         }
         return map;

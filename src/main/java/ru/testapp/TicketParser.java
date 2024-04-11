@@ -24,7 +24,7 @@ public record TicketParser(TicketRepository ticketRepository, TicketService tick
         TicketRepository ticketRepository = new JsonTicketRepository(pathSourceFile);
         TicketParser parser = new TicketParser(ticketRepository, new TicketService(ticketRepository));
         double requiredDiff = parser.ticketService.findPriceDifferenceBetweenAveAndMed(route[0], route[1]);
-        Map<String, Integer> mapResult = parser.ticketService.minPricesOfCarriersOnTheRoute(route[0], route[1]);
+        Map<String, Long> mapResult = parser.ticketService.minFlightTimeOnTheRoute(route[0], route[1]);
         PrintResult.printResult(mapResult, requiredDiff, output);
     }
 }

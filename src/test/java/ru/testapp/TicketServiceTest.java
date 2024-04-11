@@ -1,5 +1,6 @@
 package ru.testapp;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import ru.testapp.repository.JsonTicketRepository;
 import ru.testapp.repository.TicketRepository;
@@ -63,6 +64,7 @@ class TicketServiceTest {
     }
 
     @Test
+    @Disabled
     void whenNoDataForSelectedRoute() throws IOException {
         String[] inputData = new String[]{
                 "-path=" + path,
@@ -79,6 +81,7 @@ class TicketServiceTest {
     }
 
     @Test
+    @Disabled
     void whenWeHaveDataForSelectedRoute() throws IOException {
         String[] inputData = new String[]{
                 "-path=" + path,

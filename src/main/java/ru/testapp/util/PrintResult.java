@@ -13,13 +13,13 @@ import java.util.Map;
 public class PrintResult {
     private static final Logger LOG = LoggerFactory.getLogger(TicketParser.class.getName());
 
-    public static void printResult(Map<String, Integer> map, double requiredDiff, String outputPath) {
+    public static void printResult(Map<String, Long> map, double requiredDiff, String outputPath) {
         try (var writer = new PrintWriter(new FileWriter(outputPath, StandardCharsets.UTF_8, true))) {
             if (map.isEmpty()) {
                 writer.println("there is no data for calculations in the selected direction");
             } else {
-                map.forEach((key, value) -> writer.printf("the minimum price of the %s carrier for the selected route is:  %d" + System.lineSeparator(),
-                        key, value));
+                map.forEach((key, value) -> writer.printf("Minimum flight time %s carrier for the selected route is:  %s" + System.lineSeparator(),
+                        key, TimesInfo.getAnswerTemplate(value)));
 
                 writer.printf("the difference between the average price and the median is: %.5f" + System.lineSeparator(), requiredDiff);
             }
