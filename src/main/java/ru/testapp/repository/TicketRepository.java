@@ -1,12 +1,13 @@
 package ru.testapp.repository;
 
-import ru.testapp.Ticket;
+import ru.testapp.domain.Ticket;
 
-import java.util.List;
+import java.util.stream.Stream;
 
+/**
+ * Репозиторий, дающий Stream<Ticket>. Внедряется реализация JsonTicketRepository.
+ * Поток необходимо закрывать (try-with-resources).
+ */
 public interface TicketRepository {
-    List<Ticket> findAll();
-
-    List<Ticket> findByRoute(String origin, String destination);
-
+    Stream<Ticket> streamTickets();
 }
