@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class AirportConfig {
     private static final Map<String, String> ZONES = loadZones();
-    private static final int MAX_ATTEMPTS = 3;
+    public static final int MAX_ATTEMPTS = 3;
 
     private static Map<String, String> loadZones() {
         try (InputStream in = AirportConfig.class.getResourceAsStream("/airports.yaml")) {

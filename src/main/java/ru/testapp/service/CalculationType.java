@@ -1,4 +1,6 @@
 package ru.testapp.service;
 
-public class CalculationType {
+public enum CalculationType {
+    MIN_FLIGHT_TIME,
+    PRICE_DIFFERENCE
 }
