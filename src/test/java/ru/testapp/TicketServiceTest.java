@@ -64,7 +64,7 @@ class TicketServiceTest {
     }
 
     @Test
-    @Disabled
+    //@Disabled
     void whenNoDataForSelectedRoute() throws IOException {
         String[] inputData = new String[]{
                 "-path=" + path,

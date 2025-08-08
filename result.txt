@@ -1,2 +1,7 @@
 Minimum flight time SU carrier for the selected route is:  дни = 0, часы = 1, минуты = 40
 the difference between the average price and the median is: 0,00000
+Minimum flight time BA carrier for the selected route is:  дни = 0, часы = 8, минуты = 5
+Minimum flight time S7 carrier for the selected route is:  дни = 0, часы = 6, минуты = 30
+Minimum flight time SU carrier for the selected route is:  дни = 0, часы = 6, минуты = 0
+Minimum flight time TK carrier for the selected route is:  дни = 0, часы = 5, минуты = 50
+the difference between the average price and the median is: 460,00000
