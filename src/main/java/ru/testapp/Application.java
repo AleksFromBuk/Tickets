@@ -34,17 +34,13 @@ public class Application {
                     new MinFlightTimeStrategy(parsed.getOrigin(), parsed.getDestination()));
             service.register(CalculationType.PRICE_DIFFERENCE,
                     new PriceDifferenceStrategy(parsed.getOrigin(), parsed.getDestination()));
-            ;
-
             Map<String, Object> results = service.calculateAll(parsed.getOrigin(), parsed.getDestination());
-
             ResultFormatter formatter = new ResultFormatter();
             StringBuilder output = new StringBuilder();
 
             @SuppressWarnings("unchecked")
             Map<String, Duration> minTimes = (Map<String, Duration>) results.get(CalculationType.MIN_FLIGHT_TIME);
-            output.append(formatter.formatMinFlightTimes(minTimes, parsed.getOrigin(),
-                    parsed.getDestination()));
+            output.append(formatter.formatMinFlightTimes(minTimes, parsed.getOrigin(), parsed.getDestination()));
             output.append(System.lineSeparator());
 
             double diff = (Double) results.get(CalculationType.PRICE_DIFFERENCE);

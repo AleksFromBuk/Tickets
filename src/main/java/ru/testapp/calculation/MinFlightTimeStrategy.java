@@ -15,8 +15,7 @@ import java.util.stream.Stream;
  * Стратегия: минимальное время полёта по перевозчику для заданной пары городов.
  */
 public class MinFlightTimeStrategy implements CalculationStrategy<Map<String, Duration>> {
-   private final String origin;
-
+    private final String origin;
     private final String destination;
 
     public MinFlightTimeStrategy(String origin, String destination) {
@@ -26,16 +25,21 @@ public class MinFlightTimeStrategy implements CalculationStrategy<Map<String, Du
 
     @Override
     public Map<String, Duration> calculate(Stream<Ticket> tickets) {
-        if (tickets == null) return Map.of();
+        if (tickets == null) {
+            return Map.of();
+        }
         Map<String, Duration> result = tickets
                 .filter(t -> origin.equalsIgnoreCase(t.getOrigin()) && destination.equalsIgnoreCase(t.getDestination()))
                 .collect(Collectors.groupingBy(
                         Ticket::getCarrier,
                         Collectors.mapping(
-                                t -> TimeUtils.calculateDuration(
-                                        t.getDepartureDate(), t.getDepartureTime(),
-                                        t.getArrivalDate(), t.getArrivalTime(),
-                                        origin, destination),
+                                (Ticket t) -> TimeUtils.calculateDuration(
+                                        t.getDepartureDate(),
+                                        t.getDepartureTime(),
+                                        t.getArrivalDate(),
+                                        t.getArrivalTime(),
+                                        origin, destination
+                                ),
                                 Collectors.minBy(Comparator.naturalOrder())
                         )
                 ))

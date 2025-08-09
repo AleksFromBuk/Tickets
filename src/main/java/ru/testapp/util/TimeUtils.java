@@ -31,7 +31,7 @@ public final class TimeUtils {
         return Duration.between(dep, arr);
     }
 
-    public static String formatHuman(Duration d) {
+    public static String formatWork(Duration d) {
         long hours = d.toHours();
         long minutes = d.toMinutesPart();
         return String.format("%dh %02dm", hours, minutes);
