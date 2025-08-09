@@ -11,11 +11,12 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Стратегия: минимальное время полёта по перевозчику для заданной пары городов.
+ */
 public class MinFlightTimeStrategy implements CalculationStrategy<Map<String, Duration>> {
-    // TODO нет валидации на null
-    private final String origin;
+   private final String origin;
 
-    // TODO нет валидации на null
     private final String destination;
 
     public MinFlightTimeStrategy(String origin, String destination) {

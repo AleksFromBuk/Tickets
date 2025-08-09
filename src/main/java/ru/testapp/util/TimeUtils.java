@@ -11,8 +11,8 @@ public final class TimeUtils {
         ZoneId originZone = AirportConfig.getZone(origin);
         ZoneId destZone = AirportConfig.getZone(destination);
 
-        ZonedDateTime dep = ZonedDateTime.of(depDate, depTime,  originZone);
-        ZonedDateTime arr = ZonedDateTime.of(arrDate, arrTime,  destZone);
+        ZonedDateTime dep = ZonedDateTime.of(depDate, depTime, originZone);
+        ZonedDateTime arr = ZonedDateTime.of(arrDate, arrTime, destZone);
 
         if (arr.isBefore(dep)) {
             int attempts = 0;
@@ -23,8 +23,9 @@ public final class TimeUtils {
 
             if (arr.isBefore(dep)) {
                 throw new CalculationException(
-                        "Invalid flight duration: arrival before departure after "
-                        + AirportConfig.MAX_ATTEMPTS + " corrections attempts", 7);
+                        "Invalid flight duration: arrival before departure after " +
+                                AirportConfig.MAX_ATTEMPTS + " correction attempts", 7
+                );
             }
         }
         return Duration.between(dep, arr);
@@ -35,5 +36,4 @@ public final class TimeUtils {
         long minutes = d.toMinutesPart();
         return String.format("%dh %02dm", hours, minutes);
     }
-
 }
