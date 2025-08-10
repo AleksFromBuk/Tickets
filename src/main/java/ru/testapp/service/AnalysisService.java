@@ -1,5 +1,6 @@
 package ru.testapp.service;
 
+import lombok.extern.slf4j.Slf4j;
 import ru.testapp.calculation.CalculationStrategy;
 import ru.testapp.domain.Ticket;
 import ru.testapp.exception.CalculationException;
@@ -7,6 +8,7 @@ import ru.testapp.repository.TicketRepository;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
@@ -14,6 +16,7 @@ import java.util.stream.Stream;
  * Сервис управления стратегиями и исполнением.
  * (усиленная типизация)
  */
+@Slf4j
 public class AnalysisService {
     private final TicketRepository repository;
     private final Map<CalculationType, CalculationStrategy<?>>
@@ -42,12 +45,22 @@ public class AnalysisService {
     public <T> T calculate(CalculationType type, String origin, String destination) {
         CalculationStrategy<T> strategy = (CalculationStrategy<T>) registry.get(type);
         if (strategy == null) {
-            throw new IllegalArgumentException("Strategy not registered for " + type);
+            log.warn("Стратегия для " + type + " не зарегистрирована для ");
+            throw new IllegalArgumentException("Стратегия для " + type + " не зарегистрирована для ");
         }
         try (Stream<Ticket> stream = repository.streamTickets()) {
-            return strategy.calculate(stream);
+            // Применяем фильтрацию здесь!
+            Stream<Ticket> filtered = stream
+                    .filter(Objects::nonNull)
+                    .filter(t -> origin.equals(t.getOrigin()))
+                    .filter(t -> destination.equals(t.getDestination()));
+
+            return strategy.calculate(filtered);
+//        try (Stream<Ticket> stream = repository.streamTickets()) {
+//            return strategy.calculate(stream);
         } catch (RuntimeException e) {
-            throw new CalculationException("Calculation failed for " + type, e, 5);
+            log.warn("Расчет не удался " + type, e);
+            throw new CalculationException("Расчет не удался " + type, e, 5);
         }
     }
 

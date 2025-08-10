@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.*;
 class PriceDifferenceStrategyTest {
     @Test
     void medianAndAverage_calculation_evenAndOdd() {
-        PriceDifferenceStrategy strat = new PriceDifferenceStrategy("VVO","TLV");
+        PriceDifferenceStrategy strat = new PriceDifferenceStrategy();
 
         Ticket t1 = new Ticket("VVO","A","TLV","B","12.05.18","10:00","12.05.18","14:00","X",0,100);
         Ticket t2 = new Ticket("VVO","A","TLV","B","12.05.18","10:00","12.05.18","14:00","X",0,200);
@@ -26,5 +26,4 @@ class PriceDifferenceStrategyTest {
         // avg = 250, median = (200+300)/2 = 250 => diff 0
         assertEquals(0.0, resEven, 1e-6);
     }
-
 }

@@ -16,19 +16,28 @@ import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * Streaming репозиторий. Параметр cacheEnabled включает попытку кэширования — файл читается полностью
+ * и валидные записи сохраняются в cachedTickets. Любые некорректные записи при кэшировании будут пропущены.
+ */
 @Slf4j
 public class JsonTicketRepository implements TicketRepository {
     private final Path file;
     private final ObjectMapper mapper;
     private final boolean cacheEnabled;
-    private final long cacheSizeThresholdBytes = 5 * 1024 * 1024L;
-    private static final String TICKETS_JSON_NODE_ROOT = "tickets";
+    private final long cacheSizeThresholdBytes; // порог (тест может изменить)
     private volatile List<Ticket> cachedTickets;
+    private static final String TICKETS_NODE = "tickets";
+
+    public JsonTicketRepository(Path file, boolean cacheEnabled, long cacheSizeThresholdBytes) {
+        this.file = file;
+        this.mapper = new ObjectMapper();
+        this.cacheEnabled = cacheEnabled;
+        this.cacheSizeThresholdBytes = cacheSizeThresholdBytes;
+    }
 
     public JsonTicketRepository(Path file, boolean cacheEnabled) {
-        this.file = file;
-        this.cacheEnabled = cacheEnabled;
-        mapper = new ObjectMapper();
+        this(file, cacheEnabled, 3 * 1024 * 1024L); // по умолчанию 3MB
     }
 
     @Override
@@ -43,7 +52,7 @@ public class JsonTicketRepository implements TicketRepository {
         try {
             return Files.size(file) <= cacheSizeThresholdBytes;
         } catch (Exception e) {
-            log.warn("Error checking file size", e);
+            log.warn("Невозможно проверить размер файла, кэш не используется", e);
             return false;
         }
     }
@@ -54,17 +63,24 @@ public class JsonTicketRepository implements TicketRepository {
                 if (cachedTickets == null) {
                     try (InputStream is = Files.newInputStream(file)) {
                         JsonNode root = mapper.readTree(is);
-                        JsonNode ticketsNode = root.get(TICKETS_JSON_NODE_ROOT);
+                        JsonNode ticketsNode = root.get(TICKETS_NODE);
                         if (ticketsNode == null || !ticketsNode.isArray()) {
-                            throw new DataLoadException("Missing 'tickets' array in JSON", 3);
+                            log.warn("Отсутствует массив «tickets» в JSON");
+                            throw new DataLoadException("Отсутствует массив «tickets» в JSON", 3);
                         }
                         List<Ticket> tickets = new ArrayList<>();
                         for (JsonNode node : ticketsNode) {
-                            tickets.add(mapper.treeToValue(node, Ticket.class));
+                            try {
+                                Ticket t = mapper.treeToValue(node, Ticket.class);
+                                tickets.add(t);
+                            } catch (Exception ex) {
+                                log.warn("Пропуск недействительного кэшированного билета: {}", ex.getMessage());
+                            }
                         }
                         cachedTickets = Collections.unmodifiableList(tickets);
                     } catch (Exception e) {
-                        throw new DataLoadException("Cannot cache JSON file: " + file, e, 3);
+                        log.warn("Невозможно кэшировать JSON-файл: " + file, e);
+                        throw new DataLoadException("Невозможно кэшировать JSON-файл: " + file, e, 3);
                     }
                 }
             }
@@ -81,8 +97,8 @@ public class JsonTicketRepository implements TicketRepository {
             JsonToken token;
             boolean found = false;
             while ((token = parser.nextToken()) != null) {
-                if (token == JsonToken.FIELD_NAME && TICKETS_JSON_NODE_ROOT.equals(parser.getCurrentName())) {
-                    parser.nextToken();
+                if (token == JsonToken.FIELD_NAME && TICKETS_NODE.equals(parser.getCurrentName())) {
+                    parser.nextToken(); // перейти к START_ARRAY
                     found = true;
                     break;
                 }
@@ -90,7 +106,7 @@ public class JsonTicketRepository implements TicketRepository {
             if (!found || parser.currentToken() != JsonToken.START_ARRAY) {
                 parser.close();
                 is.close();
-                throw new DataLoadException("Missing 'tickets' array in JSON", 3);
+                throw new DataLoadException("Отсутствует массив «tickets» в JSON", 3);
             }
 
             JsonTicketIterator iterator = new JsonTicketIterator(parser, mapper);
@@ -101,13 +117,15 @@ public class JsonTicketRepository implements TicketRepository {
                     parser.close();
                     is.close();
                 } catch (Exception e) {
-                    log.warn("Error closing parser", e);
+                    log.warn("Ошибка закрытия парсера", e);
                 }
             });
-        } catch (DataLoadException dataLoadException) {
-            throw dataLoadException;
+
+        } catch (DataLoadException de) {
+            throw de;
         } catch (Exception e) {
-            throw new DataLoadException("Cannot read JSON file: " + file, e, 3);
+            log.warn("Невозможно прочитать файл JSON: " + file, e);
+            throw new DataLoadException("Невозможно прочитать файл JSON: " + file, e, 3);
         }
     }
 }

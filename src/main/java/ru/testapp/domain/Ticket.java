@@ -57,7 +57,8 @@ public final class Ticket {
         this.stops = stops;
         this.price = price;
 
-        // парсим строки в LocalDate/LocalTime с валидацией
+        // Если поля null или пустые — DateUtils бросит ValidationException,
+        // и тогда Jackson конструктор пробросит, что мы перехватим в репозитории.
         this.departureDate = DateUtils.parseDateStrict(departureDateStr);
         this.departureTime = DateUtils.parseTimeStrict(departureTimeStr);
         this.arrivalDate = DateUtils.parseDateStrict(arrivalDateStr);

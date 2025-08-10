@@ -11,7 +11,6 @@ public enum CommonParam {
     CommonParam(String value) {
         this.value = value;
     }
-
     public String getValue() {
         return value;
     }

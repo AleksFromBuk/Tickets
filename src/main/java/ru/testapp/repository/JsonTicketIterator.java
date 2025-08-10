@@ -11,6 +11,7 @@ import java.util.Iterator;
 
 /**
  * Итератор, читающий объекты Ticket из JsonParser.
+ * Пропускает записи, которые не удалось распарсить (логирует).
  */
 @Slf4j
 public class JsonTicketIterator implements Iterator<Ticket> {
@@ -22,7 +23,7 @@ public class JsonTicketIterator implements Iterator<Ticket> {
         this.parser = parser;
         this.mapper = mapper;
         try {
-            this.nextToken = parser.nextToken(); //первый элемент или END_ARRAY
+            this.nextToken = parser.nextToken(); // первый элемент или END_ARRAY
         } catch (Exception e) {
             throw new DataLoadException("Ошибка инициализации итератора JSON", e, 3);
         }
@@ -38,28 +39,30 @@ public class JsonTicketIterator implements Iterator<Ticket> {
         try {
             if (nextToken == JsonToken.START_OBJECT) {
                 Ticket t = mapper.readValue(parser, Ticket.class);
-                nextToken = parser.nextToken(); // advance
+                nextToken = parser.nextToken();
                 return t;
             } else {
+                log.warn("Ожидался START_OBJECT, но получен {}", nextToken);
                 throw new IllegalStateException("Ожидался START_OBJECT, но получен " + nextToken);
             }
         } catch (DataLoadException de) {
             throw de;
         } catch (Exception e) {
-            log.warn("Пропуск ввода недействительного билета");
-            // пропускаем повреждённую запись, пытаемся восстановиться
+            log.warn("Пропуск ввода недействительного билета: {}", e.getMessage());
+            // try to advance to next START_OBJECT or END_ARRAY
             try {
                 JsonToken t;
                 do {
                     t = parser.nextToken();
                 } while (t != null && t != JsonToken.START_OBJECT && t != JsonToken.END_ARRAY);
-                this.nextToken = t;
+                nextToken = t;
             } catch (Exception ex) {
+                log.warn("Ошибка при пропуске недействительного тикета", ex);
                 throw new DataLoadException("Ошибка при пропуске недействительного тикета", ex, 3);
             }
             if (nextToken == JsonToken.START_OBJECT) return next();
+            log.warn("Обнаружен некорректный тикет", e);
             throw new DataLoadException("Обнаружен некорректный тикет", e, 3);
         }
     }
-
 }

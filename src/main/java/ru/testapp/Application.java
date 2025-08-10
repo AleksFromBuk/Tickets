@@ -31,19 +31,19 @@ public class Application {
             AnalysisService service = new AnalysisService(repo);
 
             service.register(CalculationType.MIN_FLIGHT_TIME,
-                    new MinFlightTimeStrategy(parsed.getOrigin(), parsed.getDestination()));
+                    new MinFlightTimeStrategy());
             service.register(CalculationType.PRICE_DIFFERENCE,
-                    new PriceDifferenceStrategy(parsed.getOrigin(), parsed.getDestination()));
+                    new PriceDifferenceStrategy());
             Map<String, Object> results = service.calculateAll(parsed.getOrigin(), parsed.getDestination());
             ResultFormatter formatter = new ResultFormatter();
             StringBuilder output = new StringBuilder();
 
             @SuppressWarnings("unchecked")
-            Map<String, Duration> minTimes = (Map<String, Duration>) results.get(CalculationType.MIN_FLIGHT_TIME);
+            Map<String, Duration> minTimes = (Map<String, Duration>) results.get(CalculationType.MIN_FLIGHT_TIME.name());
             output.append(formatter.formatMinFlightTimes(minTimes, parsed.getOrigin(), parsed.getDestination()));
             output.append(System.lineSeparator());
 
-            double diff = (Double) results.get(CalculationType.PRICE_DIFFERENCE);
+            double diff = (Double) results.get(CalculationType.PRICE_DIFFERENCE.name());
             output.append(formatter.formatPriceDifference(diff));
 
             new ResultWriter().write(output.toString(), parsed.getOut());

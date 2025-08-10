@@ -14,7 +14,7 @@ import java.util.Map;
  * Поддерживает: -p/--path, -o/--out, -f/--from, -t/--to, --cache (опция).
  */
 public class CommandLineParser {
-    private static final String DEFAULT_INPUT = "tickets.json";
+    private static final String DEFAULT_INPUT = "Tickets.json";
     private static final String DEFAULT_OUTPUT = "result.text";
     private static final String DEFAULT_FROM = "VVO";
     private static final String DEFAULT_TO = "TLV";
@@ -71,6 +71,5 @@ public class CommandLineParser {
             throw new ValidationException("Отсутствует значение для " + flag, 2);
         return args[idx];
     }
-
 }
 

@@ -5,3 +5,12 @@ Minimum flight time S7 carrier for the selected route is:  дни = 0, часы 
 Minimum flight time SU carrier for the selected route is:  дни = 0, часы = 6, минуты = 0
 Minimum flight time TK carrier for the selected route is:  дни = 0, часы = 5, минуты = 50
 the difference between the average price and the median is: 460,00000
+
+
+Минимальное время полета (VVO -> TLV):
+ BA: 15h 05m
+ S7: 13h 30m
+ SU: 13h 00m
+ TK: 12h 50m
+
+Разница между средней ценой и медианой: 460,00
