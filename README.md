@@ -110,3 +110,27 @@ TLV: Asia/Jerusalem
 ```bash
 mvn test
 ```
+
+## Быстрый старт на Linux
+ 1. Установите зависимости:
+
+```bash
+sudo apt update
+sudo apt install openjdk-17-jdk maven
+```
+ 2. Клонируйте репозиторий:
+
+```bash
+git clone https://github.com/AleksFromBuk/Tickets.git
+cd Tickets
+```
+ 3. Соберите приложение:
+
+```bash
+mvn clean package
+```
+ 4. Запустите анализ:
+
+```bash
+java -jar target/Tickets_parse-1.0-SNAPSHOT.jar
+```
