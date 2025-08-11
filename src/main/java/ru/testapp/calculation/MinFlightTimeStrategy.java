@@ -15,7 +15,6 @@ import java.util.stream.Stream;
  */
 @Slf4j
 public class MinFlightTimeStrategy implements CalculationStrategy<Map<String, Duration>> {
-
     @Override
     public Map<String, Duration> calculate(Stream<Ticket> tickets) {
         if (tickets == null) {

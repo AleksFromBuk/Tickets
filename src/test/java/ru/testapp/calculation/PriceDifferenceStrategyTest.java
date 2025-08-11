@@ -6,7 +6,6 @@ import ru.testapp.domain.Ticket;
 import java.util.stream.Stream;
 
 import static junit.framework.Assert.assertEquals;
-import static org.assertj.core.api.Assertions.*;
 
 class PriceDifferenceStrategyTest {
     @Test
