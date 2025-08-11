@@ -24,15 +24,16 @@ mvn clean package
 ## Использование
 
 ```bash
-java -jar target/Tickets_parse.jar [параметры]
+# Базовый вариант (использует Tickets.json в текущей директории)
+java -jar target/Tickets_parse-1.0-SNAPSHOT.jar [параметры]
 ```
 
 ### Параметры
 
 | Флаг           | Описание                         | По умолчанию        |
-| -------------- | -------------------------------- | ------------------- |
+| -------------- | -------------------------------- |---------------------|
 | `-p`, `--path` | Путь к JSON-файлу с билетами     | `Tickets.json`      |
-| `-o`, `--out`  | Файл для результатов             | `result.txt`        |
+| `-o`, `--out`  | Файл для результатов             | `result.text`       |
 | `-f`, `--from` | Код аэропорта вылета (3 буквы)   | `VVO` (Владивосток) |
 | `-t`, `--to`   | Код аэропорта прибытия (3 буквы) | `TLV` (Тель-Авив)   |
 | `--cache`      | Включить кэширование файлов      | Выключено           |
@@ -40,17 +41,28 @@ java -jar target/Tickets_parse.jar [параметры]
 ### Примеры
 
 ```bash
-# Базовый вариант
-java -jar target/Tickets_parse.jar
+# Базовый вариант (файл Tickets.json в текущей директории)
+java -jar target/Tickets_parse-1.0-SNAPSHOT.jar
 
-# С указанием файлов
-java -jar target/Tickets_parse.jar --path=data/tickets.json --out=analysis_result.txt
+# С указанием файла данных
+java -jar target/Tickets_parse-1.0-SNAPSHOT.jar --path=/home/user/data/tickets.json
+
+# С указанием выходного файла
+java -jar target/Tickets_parse-1.0-SNAPSHOT.jar --out=/var/reports/result.txt
 
 # С указанием маршрута
-java -jar target/Tickets_parse.jar --from=LED --to=IST
+java -jar target/Tickets_parse-1.0-SNAPSHOT.jar --from=LED --to=IST
 
 # С включенным кэшированием
-java -jar target/Tickets_parse.jar --cache
+java -jar target/Tickets_parse-1.0-SNAPSHOT.jar --cache
+
+# Полный пример
+java -jar target/Tickets_parse-1.0-SNAPSHOT.jar \
+  --path=/home/user/data/tickets.json \
+  --out=/var/reports/flight_analysis.txt \
+  --from=VVO \
+  --to=TLV \
+  --cache
 ```
 
 ## Особенности реализации
